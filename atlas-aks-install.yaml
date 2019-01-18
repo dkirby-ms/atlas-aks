@@ -1,20 +1,36 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: atlas
+---
+apiVersion: v1
 kind: Pod
 metadata:
-  name: atlaspod
+  namespace: atlas
+  name: atlaspod-install
 spec:
   containers:
   - image: saitcho/atlas:atlas-server
-    name: atlaspod
+    name: atlaspod-install
     resources:
       requests:
         memory: 4Gi
     volumeMounts:
-      - name: azure
+      - name: atlas-fs
         mountPath: /mnt/atlas-server
   volumes:
-  - name: azure
-    azureFile:
-      secretName: azure-secret
-      shareName: aksshare
-      readOnly: false
+  - name: atlas-fs
+    flexVolume:
+          driver: ceph.rook.io/rook
+          fsType: ceph
+          options:
+            fsName: myfs # name of the filesystem specified in the filesystem CRD.
+            clusterNamespace: rook-ceph # namespace where the Rook cluster is deployed
+            # by default the path is /, but you can override and mount a specific path of the filesystem by using the path attribute
+            # the path must exist on the filesystem, otherwise mounting the filesystem at that path will fail
+            # path: /some/path/inside/cephfs
+            # (Optional) Specify an existing Ceph user that will be used for mounting storage with this StorageClass.
+            #mountUser: user1
+            # (Optional) Specify an existing Kubernetes secret name containing just one key holding the Ceph user secret.
+            # The secret must exist in each namespace(s) where the storage will be consumed.
+            #mountSecret: ceph-user1-secret
