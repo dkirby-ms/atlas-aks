@@ -40,6 +40,10 @@ RUN apt-get update && \
 
 # END install
 
+# create rook fs mount path
+RUN mkdir /mnt/atlas-server
+RUN chmod a+x /mnt/atlas-server
+
 # locale env
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
