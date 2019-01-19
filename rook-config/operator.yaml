@@ -36,8 +36,6 @@ spec:
                   type: boolean
                 urlPrefix:
                   type: string
-                port:
-                  type: integer
             dataDirHostPath:
               pattern: ^/(\S+)
               type: string
@@ -103,22 +101,6 @@ spec:
     - name: Age
       type: date
       JSONPath: .metadata.creationTimestamp
----
-apiVersion: apiextensions.k8s.io/v1beta1
-kind: CustomResourceDefinition
-metadata:
-  name: cephnfses.ceph.rook.io
-spec:
-  group: ceph.rook.io
-  names:
-    kind: CephNFS
-    listKind: CephNFSList
-    plural: cephnfses
-    singular: cephnfs
-    shortNames:
-    - nfs
-  scope: Namespaced
-  version: v1
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -405,7 +387,7 @@ spec:
       serviceAccountName: rook-ceph-system
       containers:
       - name: rook-ceph-operator
-        image: rook/ceph:master
+        image: rook/ceph:v0.9.1
         args: ["ceph", "operator"]
         volumeMounts:
         - mountPath: /var/lib/rook
@@ -470,11 +452,6 @@ spec:
         # For more details see https://github.com/rook/rook/issues/1314#issuecomment-355799641
         - name: ROOK_HOSTPATH_REQUIRES_PRIVILEGED
           value: "false"
-        # In some situations SELinux relabelling breaks (times out) on large filesystems, and doesn't work with cephfs ReadWriteMany volumes (last relabel wins).
-        # Disable it here if you have similiar issues.
-        # For more details see https://github.com/rook/rook/issues/2417
-        - name: ROOK_ENABLE_SELINUX_RELABELING
-          value: "true"
         # The name of the node to pass with the downward API
         - name: NODE_NAME
           valueFrom:
