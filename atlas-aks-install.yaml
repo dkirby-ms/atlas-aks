@@ -17,7 +17,7 @@ spec:
         memory: 4Gi
     volumeMounts:
       - name: atlas-fs
-        mountPath: /mnt/atlas-server
+        mountPath: /var/lib/atlas-server
   volumes:
   - name: atlas-fs
     flexVolume:
