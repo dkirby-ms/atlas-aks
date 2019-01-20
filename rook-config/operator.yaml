@@ -415,8 +415,8 @@ spec:
         # - name: AGENT_MOUNT_SECURITY_MODE
         #   value: "Any"
         # Set the path where the Rook agent can find the flex volumes
-        # name: FLEXVOLUME_DIR_PATH
-        # value: "/etc/kubernetes/volumeplugins/"
+        - name: FLEXVOLUME_DIR_PATH
+          value: "/etc/kubernetes/volumeplugins/"    # Dale K - I cant tell what this should be for Azure; docs conflict and i think recent updates allow default value
         # Set the path where kernel modules can be found
         # - name: LIB_MODULES_DIR_PATH
         #  value: "<PathToLibModules>"
