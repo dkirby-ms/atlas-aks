@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: atlas
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: atlas
+  name: atlas-install
+spec:
+  template:
+    spec:
+      containers:
+      - image: saitcho/atlas:latest
+        name: atlas-install
+        command: ["install-server"]
+        resources:
+          requests:
+            memory: 4Gi
+        volumeMounts:
+          - name: atlas-fs
+            mountPath: /var/lib/atlas-server
+      securityContext:
+        fsGroup: 1000    # fix hardcoded entry (uid for Atlas user created in docker image, causes hard dependency)
+      restartPolicy: Never
+      volumes:
+      - name: atlas-fs
+        flexVolume:
+              driver: ceph.rook.io/rook
+              fsType: ceph
+              options:
+                fsName: myfs # name of the filesystem specified in the filesystem CRD.
+                clusterNamespace: rook-ceph # namespace where the Rook cluster is deployed
+                # by default the path is /, but you can override and mount a specific path of the filesystem by using the path attribute
+                # the path must exist on the filesystem, otherwise mounting the filesystem at that path will fail
+                # path: /some/path/inside/cephfs
+                # (Optional) Specify an existing Ceph user that will be used for mounting storage with this StorageClass.
+                #mountUser: user1
+                # (Optional) Specify an existing Kubernetes secret name containing just one key holding the Ceph user secret.
+                # The secret must exist in each namespace(s) where the storage will be consumed.
+                #mountSecret: ceph-user1-secret
+  backoffLimit: 2

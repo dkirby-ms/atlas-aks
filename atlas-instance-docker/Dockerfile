@@ -41,16 +41,15 @@ RUN apt-get update && \
 # END install
 
 # create rook fs mount path
-RUN mkdir /var/lib/atlas-server && \
-    chmod a+x /var/lib/atlas-server
+#RUN mkdir /var/lib/atlas-server && \
+#    chmod a+x /var/lib/atlas-server && \
+#    chown atlas:atlas /var/lib/atlas-server
 
 # locale env
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
-CMD ["install-server"]
-
 COPY ./bin /usr/local/bin
 RUN chmod a+x /usr/local/bin/*
 
-USER ${UNAME}
+# USER ${UNAME}

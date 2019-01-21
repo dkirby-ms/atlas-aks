@@ -10,7 +10,7 @@ metadata:
   name: atlaspod-install
 spec:
   containers:
-  - image: saitcho/atlas:atlas-server
+  - image: saitcho/atlas:latest
     name: atlaspod-install
     resources:
       requests:
