@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas
+  labels:
+    app: atlas
+spec:
+  ports:
+  - protocol: UDP
+    port: 57500
+    name: #
+  - protocol: UDP
+    port: 57501
+  - protocol: UDP
+    port: 57502
+  clusterIP: None
+  selector:
+    app: atlas

@@ -28,7 +28,6 @@ RUN apt-get update && \
     update-locale LANG=en_US.UTF-8 && \
     # basic deps
     apt-get install -y --no-install-recommends lib32gcc1 gpg-agent software-properties-common apt-transport-https wget && \
-    apt-get install -y --no-install-recommends xvfb x11vnc xterm && \
     # steamcmd
     su -p -l ${UNAME} -c 'wget -qO- "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -' && \
     # clean

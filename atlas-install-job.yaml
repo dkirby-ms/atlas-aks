@@ -21,8 +21,8 @@ spec:
         volumeMounts:
           - name: atlas-fs
             mountPath: /var/lib/atlas-server
-      securityContext:
-        fsGroup: 1000    # fix hardcoded entry (uid for Atlas user created in docker image, causes hard dependency)
+      #securityContext:
+      #  fsGroup: 1000    # fix hardcoded entry (uid for Atlas user created in docker image, causes hard dependency)
       restartPolicy: Never
       volumes:
       - name: atlas-fs

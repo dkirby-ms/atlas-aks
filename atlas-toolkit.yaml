@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-toolkit
+  namespace: atlas
+  labels:
+    app: atlas-toolkit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas-toolkit
+  template:
+    metadata:
+      labels:
+        app: atlas-toolkit
+    spec:
+      containers:
+      - name: atlas-toolkit
+        image: saitcho/atlas-toolkit:latest
+        command: ["/bin/bash"]
+        volumeMounts:
+          - name: atlas-fs
+            mountPath: /var/lib/atlas-server
+      volumes:
+      - name: atlas-fs
+        flexVolume:
+              driver: ceph.rook.io/rook
+              fsType: ceph
+              options:
+                fsName: myfs # name of the filesystem specified in the filesystem CRD.
+                clusterNamespace: rook-ceph # namespace where the Rook cluster is deployed
+                

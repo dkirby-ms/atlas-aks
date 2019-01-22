@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: atlas
   labels:
-    app: nginx
+    app: atlas
 spec:
   ports:
-  - port: 80
+  - port: 57500:57533/udp
     name: web
   clusterIP: None
   selector:
